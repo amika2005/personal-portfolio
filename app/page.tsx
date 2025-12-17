@@ -4,8 +4,9 @@ import { Header } from "@/components/header"
 import { SocialSidebar } from "@/components/social-slider"
 import { Footer } from "@/components/footer"
 import { HeroSection } from "@/components/sections/hero-section"
-import { SkillsSection } from "@/components/sections/skills-section"
-import { TechnologiesSection } from "@/components/sections/technologies-section"
+import { GsapSkillsSection } from "@/components/sections/gsap-skills-section"
+
+import { LetsClickSection } from "@/components/sections/lets-click-section"
 import { CustomCursor } from "@/components/custom-cursor"
 import { useState, useEffect } from "react"
 
@@ -38,14 +39,24 @@ export default function HomePage() {
 
       <CustomCursor />
       <Header />
-      <main className="container mx-auto px-6 py-8 max-w-5xl">
+      
+      {/* Hero Section */}
+      <div className="container mx-auto px-6 py-8 max-w-5xl">
         <HeroSection />
-        <div className="py-4"></div>
-        <SkillsSection />
-        <div className="py-16"></div>
-        <TechnologiesSection />
+      </div>
+      
+      {/* GSAP Skills Section - Full Width Dark */}
+      <GsapSkillsSection />
+      
+      {/* Signs You're Ready Section */}
+
+      
+      <main className="container mx-auto px-6 py-8 max-w-5xl">
         <SocialSidebar />
       </main>
+
+      {/* CTA: Let's Make Things Click */}
+      <LetsClickSection />
 
       <Footer />
     </div>

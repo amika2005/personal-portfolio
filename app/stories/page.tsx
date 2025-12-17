@@ -15,6 +15,8 @@ export default function StoriesPage() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  /* New State for User Preference */
+  const [isUserPaused, setIsUserPaused] = useState(false);
 
   // Handle initial user interaction to enable audio
   useEffect(() => {
@@ -28,7 +30,8 @@ export default function StoriesPage() {
       if (carouselRef.current) {
         const carouselRect = carouselRef.current.getBoundingClientRect();
         const isInCarousel = carouselRect.top < window.innerHeight && carouselRect.bottom > 0;
-        if (audioRef.current && isInCarousel && !isPlaying) {
+        // Only auto-play if user hasn't explicitly paused
+        if (audioRef.current && isInCarousel && !isPlaying && !isUserPaused) {
           audioRef.current.play().catch(console.error);
         }
       }
@@ -38,18 +41,17 @@ export default function StoriesPage() {
       document.removeEventListener('touchstart', handleFirstInteraction);
       document.removeEventListener('keydown', handleFirstInteraction);
     };
-
-    // Add event listeners for first interaction
+    
+    // ... existing listeners ...
     document.addEventListener('click', handleFirstInteraction, { once: true });
     document.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    document.addEventListener('keydown', handleFirstInteraction, { once: true });
-
+    // ...
     return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('keydown', handleFirstInteraction);
-    };
-  }, [isPlaying]);
+       document.removeEventListener('click', handleFirstInteraction);
+       document.removeEventListener('touchstart', handleFirstInteraction);
+       // ...
+    }
+  }, [isPlaying, isUserPaused]); // Added isUserPaused dep
 
   // Auto-play audio when carousel is in view
   useEffect(() => {
@@ -59,29 +61,17 @@ export default function StoriesPage() {
       if (!audioRef.current) return;
       
       try {
-        // Mute the audio first to ensure autoplay works
         const wasMuted = audioRef.current.muted;
         audioRef.current.muted = true;
-        
-        // Try to play (this will work even without user interaction when muted)
         await audioRef.current.play();
-        
-        // If we got here, playback started successfully
         setIsPlaying(true);
         document.body.dataset.audioPlaying = 'true';
-        
-        // Unmute if it wasn't muted before
         if (!wasMuted) {
           audioRef.current.muted = false;
         }
-        
       } catch (error) {
         console.log('Playback failed:', error);
-        // If autoplay failed, show the play button
-        const playButton = document.querySelector('.play-music-button');
-        if (playButton) {
-          playButton.classList.remove('hidden');
-        }
+        // ...
       }
     };
 
@@ -89,11 +79,12 @@ export default function StoriesPage() {
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            if (audioRef.current && !isPlaying) {
+            // Check isUserPaused
+            if (audioRef.current && !isPlaying && !isUserPaused) {
               handlePlay();
             }
           } else {
-            // Immediately pause when not intersecting
+            // Pause when out of view (this is fine, but maybe don't set isUserPaused)
             if (audioRef.current) {
               audioRef.current.pause();
               setIsPlaying(false);
@@ -102,31 +93,22 @@ export default function StoriesPage() {
           }
         });
       },
-      { 
-        threshold: 0.1,
-        root: null, // Use the viewport as root
-        rootMargin: '0px 0px 0px 0px' // No margin for more precise detection
-      }
+      { threshold: 0.1 }
     );
-
+     // ...
     const currentRef = carouselRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [isPlaying]);
+    if (currentRef) observer.observe(currentRef);
+    return () => { if (currentRef) observer.unobserve(currentRef); };
+  }, [isPlaying, isUserPaused]); // Added isUserPaused
 
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsUserPaused(true); // User explicitly paused
       } else {
         audioRef.current.play();
+        setIsUserPaused(false); // User explicitly played
       }
       setIsPlaying(!isPlaying);
     }
@@ -299,7 +281,7 @@ export default function StoriesPage() {
         
         <div 
           ref={carouselRef}
-          className="w-full h-[80vh] min-h-[600px] flex items-center justify-center mt-32"
+          className="w-full h-[80vh] min-h-[600px] flex items-center justify-center mt-12 md:mt-32" 
         >
           <div className="w-full max-w-4xl h-full">
             <Carousel3D />
@@ -310,7 +292,6 @@ export default function StoriesPage() {
           <p className="mb-4">
             Hover and drag to rotate the carousel. The carousel will automatically rotate when idle.
           </p>
-          
         </div>
       </main>
       

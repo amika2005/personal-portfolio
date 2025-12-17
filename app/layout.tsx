@@ -1,14 +1,22 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Teko } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import "./globals.css"
+import SmoothScroll from "@/components/SmoothScroll"
+import { SeasonalWrapper } from "@/components/seasonal/seasonal-wrapper"
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+})
+
+const teko = Teko({
+  subsets: ["latin"],
+  variable: "--font-teko",
+  weight: ["300", "400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -31,13 +39,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans ${inter.variable} antialiased`}>
-        <Suspense fallback={null}>
+      <body className={`font-sans ${inter.variable} ${teko.variable} antialiased`}>
+        <SmoothScroll>
+          <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
+            <SeasonalWrapper />
             {children}
           </ThemeProvider>
         </Suspense>
         <Analytics />
+        </SmoothScroll>
       </body>
     </html>
   )

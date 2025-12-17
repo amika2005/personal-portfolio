@@ -28,14 +28,34 @@ export function Carousel3D() {
     tX: 0,
     tY: 10,
   });
-  
+
+  // Responsive Configuration
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Set radius based on device
+  useEffect(() => {
+    setRadius(isMobile ? 180 : 300);
+  }, [isMobile]);
+
   const config = {
     autoRotate: true,
     rotateSpeed: -0.05,
-    itemWidth: 300,
-    itemHeight: 400,
-    minRadius: 300,
-    maxRadius: 500,
+    itemWidth: isMobile ? 160 : 300,
+    itemHeight: isMobile ? 240 : 400,
+    minRadius: isMobile ? 140 : 300,
+    maxRadius: isMobile ? 300 : 500,
     zoomSensitivity: 0.5,
     dragSensitivity: 0.5,
     perspective: 1500,
@@ -136,7 +156,7 @@ export function Carousel3D() {
     
     applyTransform(spinContainer.current);
     animationRef.current = requestAnimationFrame(playSpin);
-  }, [isDragging, isAutoRotating, applyTransform]);
+  }, [isDragging, isAutoRotating, applyTransform, config]);
   
   // Handle mouse wheel for zooming
   const handleWheel = useCallback((e: WheelEvent) => {
@@ -146,7 +166,7 @@ export function Carousel3D() {
       const newRadius = Math.min(Math.max(prev + delta, config.minRadius), config.maxRadius);
       return newRadius;
     });
-  }, []);
+  }, [config]);
   
   // Handle mouse down for dragging
   const handleMouseDown = useCallback((e: MouseEvent) => {
@@ -174,7 +194,7 @@ export function Carousel3D() {
     if (spinContainer.current) {
       applyTransform(spinContainer.current);
     }
-  }, [isDragging, applyTransform]);
+  }, [isDragging, applyTransform, config]);
   
   // Handle mouse up/leave
   const handleMouseUp = useCallback(() => {
@@ -184,17 +204,49 @@ export function Carousel3D() {
   }, []);
   
   // Handle touch events
+  const initialPinchDistance = useRef(0);
+  const initialRadiusRef = useRef(0);
+
   const handleTouchStart = useCallback((e: TouchEvent) => {
     e.preventDefault();
-    setIsDragging(true);
-    startX.current = e.touches[0].clientX - currentX.current;
-    startY.current = e.touches[0].clientY - currentY.current;
     setIsAutoRotating(false);
-  }, []);
+
+    // Handle Pinch Zoom Start
+    if (e.touches.length === 2) {
+        const dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialPinchDistance.current = dist;
+        initialRadiusRef.current = radius;
+        return;
+    }
+
+    // Handle Single Touch Drag Start
+    if (e.touches.length === 1) {
+        setIsDragging(true);
+        startX.current = e.touches[0].clientX - currentX.current;
+        startY.current = e.touches[0].clientY - currentY.current;
+    }
+  }, [radius]);
   
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (!isDragging) return;
     e.preventDefault();
+
+    // Handle Pinch Zoom Move
+    if (e.touches.length === 2) {
+        const dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        const delta = (dist - initialPinchDistance.current) * 1.5; // Zoom factor
+        
+        setRadius(Math.min(Math.max(initialRadiusRef.current + delta, config.minRadius), config.maxRadius));
+        return;
+    }
+
+    // Handle Single Touch Drag Move
+    if (!isDragging || e.touches.length !== 1) return;
     
     currentX.current = e.touches[0].clientX - startX.current;
     currentY.current = e.touches[0].clientY - startY.current;
@@ -207,7 +259,7 @@ export function Carousel3D() {
     if (spinContainer.current) {
       applyTransform(spinContainer.current);
     }
-  }, [isDragging, applyTransform]);
+  }, [isDragging, applyTransform, config]);
   
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);

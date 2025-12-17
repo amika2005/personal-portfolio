@@ -44,7 +44,7 @@ export function Footer({ className }: FooterProps) {
     <footer
       ref={footerRef as React.RefObject<HTMLElement>}
       className={cn(
-        "relative mt-20 bg-gray-100 dark:bg-gray-900 overflow-hidden",
+        "relative mt-0 bg-gray-100 dark:bg-gray-900 overflow-hidden",
         className
       )}
     >
@@ -67,11 +67,20 @@ export function Footer({ className }: FooterProps) {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "text-sm font-bold tracking-wider transition-colors hover:text-primary uppercase",
-                  pathname === item.href ? "text-primary" : "text-gray-700 dark:text-gray-300"
+                  "group relative text-sm font-bold tracking-wider transition-colors hover:text-sky-500 uppercase py-1",
+                  pathname === item.href ? "text-sky-500" : "text-gray-700 dark:text-gray-300"
                 )}
               >
                 {item.name}
+                {/* Animated underline */}
+                <span 
+                  className={cn(
+                    "absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-sky-500 transition-all duration-300 ease-out",
+                    pathname === item.href 
+                      ? "w-full" 
+                      : "w-0 group-hover:w-full"
+                  )}
+                />
               </Link>
             ))}
           </nav>

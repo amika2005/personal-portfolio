@@ -19,14 +19,17 @@ export function HeroSection() {
           className={`space-y-6 sm:space-y-8 ${isVisible ? "animate-slide-in-left animate-stagger-1" : "opacity-0 -translate-x-full"}`}
         >
           <div className="space-y-3 sm:space-y-4">
-            <p className="text-base sm:text-lg text-muted-foreground">
-              It's me
+            <p className="text-base sm:text-lg text-gray-700 dark:text-gray-200 font-teko tracking-wide">
+              It&apos;s me
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-tight sm:leading-none">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-teko font-bold tracking-tight leading-[0.8] uppercase">
               Amika <br className="hidden sm:block" />
               Fernando
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground uppercase tracking-wider">
+            <p 
+              className="mt-2 text-xl sm:text-2xl lg:text-3xl font-medium text-gray-700 dark:text-gray-200 leading-none tracking-wide uppercase"
+              style={{ fontFamily: "'Teko', sans-serif" }}
+            >
               INTERN SOFTWARE ENGINEER
             </p>
           </div>
