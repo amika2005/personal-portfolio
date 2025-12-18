@@ -1,1 +1,1 @@
-This is the Web URL - https://amika-portfolio.netlify.app/
+This is the Web URL - https://amikaf-portfolio.vercel.app/
