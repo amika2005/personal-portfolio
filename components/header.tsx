@@ -12,17 +12,17 @@ import { SantaHat, KohaBird, VesakLantern } from "./seasonal/logo-decorations"
 
 const navigation = [
   { name: "Resume", href: "/resume", color: "#beef00" },
-  { name: "Quotes", href: "/quotes", color: "#ff0028" },
   { name: "Stories", href: "/stories", color: "#00eaff" },
+  { name: "Quotes", href: "/quotes", color: "#ff0028" },
   { name: "Blog", href: "/blog", color: "#d300ff" },
   { name: "Contact", href: "mailto:amikafernando123@gmail.com", color: "#FF6B00" },
 ]
 
 const desktopNav = [
-  { name: "Resume", href: "/resume", icon: User },
-  { name: "Quotes", href: "/quotes", icon: Quote },
-  { name: "Stories", href: "/stories", icon: BookOpen },
-  { name: "Blog", href: "/blog", icon: PenSquare },
+  { name: "Resume", href: "/resume", icon: User, color: "#beef00" },
+  { name: "Stories", href: "/stories", icon: BookOpen, color: "#00eaff" },
+  { name: "Quotes", href: "/quotes", icon: Quote, color: "#ff0028" },
+  { name: "Blog", href: "/blog", icon: PenSquare, color: "#d300ff" },
 ]
 
 export function Header() {
