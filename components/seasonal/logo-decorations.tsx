@@ -4,20 +4,22 @@ import { motion } from "framer-motion"
 
 export function SantaHat() {
   return (
-    <motion.svg
+    <motion.div
       initial={{ opacity: 0, rotate: -20, scale: 0.8 }}
       animate={{ opacity: 1, rotate: -15, scale: 1 }}
       transition={{ delay: 0.5, type: "spring" }}
-      viewBox="0 0 100 100"
-      className="absolute -top-6 -left-4 w-12 h-12 z-50 pointer-events-none"
+      className="absolute -top-[10px] -left-[22px] w-14 h-14 z-50 pointer-events-none"
     >
-      {/* Red Hat Base */}
-      <path d="M10,80 Q50,-10 90,80 Z" fill="#D32F2F" />
-      {/* White Pom Pom */}
-      <circle cx="50" cy="5" r="8" fill="white" />
-      {/* White Trim */}
-      <rect x="5" y="75" width="90" height="15" rx="5" fill="white" />
-    </motion.svg>
+      <video 
+        autoPlay 
+        loop 
+        muted 
+        playsInline
+        className="w-full h-full object-contain"
+      >
+        <source src="/Christmas%20hat.webm" type="video/webm" />
+      </video>
+    </motion.div>
   )
 }
 

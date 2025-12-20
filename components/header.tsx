@@ -95,12 +95,12 @@ export function Header() {
             transition={{ duration: 0.2 }}
           >
             <Link href="/" className="group relative block perspective-1000">
-               {/* Seasonal Decorations Container */}
-               <AnimatePresence>
-                 {season === "christmas" && <SantaHat />}
-                 {season === "avurudu" && <KohaBird />}
-                 {season === "vesak" && <VesakLantern />}
-               </AnimatePresence>
+                {/* Seasonal Decorations Container - Moved outside rotating div */}
+                <AnimatePresence>
+                  {season === "christmas" && <SantaHat />}
+                  {season === "avurudu" && <KohaBird />}
+                  {season === "vesak" && <VesakLantern />}
+                </AnimatePresence>
 
               <div className="relative transition-all duration-500 transform-style-3d group-hover:rotate-x-180">
                 {/* Front Face - AMIKA */}
