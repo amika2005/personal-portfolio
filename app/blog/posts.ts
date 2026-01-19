@@ -17,6 +17,42 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "2026-year-code-came-alive",
+    title: "2026: The Year Code Came Alive",
+    subtitle: "From static text to agentic partners—how this year changes everything.",
+    date: "Jan 1, 2026",
+    readingTime: "6 min read",
+    description: "A visionary look at how 2026 marks the shift from simple coding to true collaboration with AI agents.",
+    sections: [
+      {
+        heading: "The Shift to Autonomy",
+        paragraphs: [
+          "If 2025 was the year of the Copilot, 2026 is the dawn of the Agent. We're no longer just auto-completing lines; we're orchestrating entire workflows. The definition of a 'developer' is evolving from someone who types syntax to someone who directs intelligence.",
+          "This year, we stop asking AI to 'write a function' and start asking it to 'build a feature'. The difference is profound. It demands a new kind of discipline—one of clear thought, architectural vision, and the ability to verify complex outcomes."
+        ]
+      },
+      {
+        heading: "Building with Purpose",
+        paragraphs: [
+          "With the barrier to entry for coding lowered, the value of *what* we build matters more than ever. 'Can I build it?' is no longer the bottleneck. The real question is 'Should I build it?' and 'Is it beautiful?'",
+          "In 2026, I'm committing to building software that feels alive. Interfaces that respond with fluidity, backends that heal themselves, and experiences that respect the user's time and attention. We aren't just shipping code; we're crafting digital environments."
+        ],
+        bullets: [
+          "Focus on 'Why': Every line of code must serve a user need.",
+          "Craftsmanship in the Age of AI: AI handles the grunt work; we handle the soul.",
+          "Sustainable Engineering: Building systems that last, not just fixing bugs."
+        ]
+      },
+      {
+        heading: "A Personal Note",
+        paragraphs: [
+          "To everyone following my journey: thank you. This portfolio isn't just a showcase; it's a playground. Every glich, every animation, every blog post is a step in my own evolution alongside these technologies.",
+          "Let's make 2026 the year we stop fearing the future and start shaping it. Here's to bug-free deploys, elegant solutions, and the magic of creation."
+        ]
+      }
+    ]
+  },
+  {
     slug: "antigravity-agentic-coding",
     title: "Antigravity: The Agentic Future of Coding",
     subtitle: "Redefining how we build software with autonomous AI agents.",
