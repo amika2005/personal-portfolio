@@ -17,6 +17,132 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "claude-fable-5-mythos-class-era",
+    title: "Claude Fable 5 & Mythos 5: Welcome to the Mythos Class",
+    subtitle: "Anthropic's new top tier sits above Opus—and it changes how we think about working with AI.",
+    date: "Jun 12, 2026",
+    readingTime: "7 min read",
+    description:
+      "Breaking down Anthropic's Claude 5 family launch: what the new Mythos-class tier means, how Fable 5 differs from Mythos 5, and what developers should know before migrating.",
+    sections: [
+      {
+        heading: "A new tier above Opus",
+        paragraphs: [
+          "For years the Claude lineup had a simple shape: Haiku for speed, Sonnet for balance, Opus at the top. With the Claude 5 family, Anthropic introduced something new—a Mythos-class tier that sits above Opus entirely. Claude Fable 5 is the first model in that tier, built for the most demanding reasoning and long-horizon agentic work.",
+          "The headline specs are serious: a 1M-token context window by default, up to 128K output tokens per request, and reasoning that's always on—there is no 'thinking disabled' mode anymore. The model decides how deeply to think, and you steer the depth with a single effort parameter instead of juggling token budgets."
+        ]
+      },
+      {
+        heading: "Fable vs Mythos: same brain, different doors",
+        paragraphs: [
+          "Here's the part that confused people at launch: Claude Fable 5 and Claude Mythos 5 share the same underlying model. The difference is access and safety posture. Fable 5 is the generally available version and ships with additional safety measures for dual-use capabilities—its classifiers can decline requests in sensitive domains like research biology and most cybersecurity content.",
+          "Mythos 5 offers the same capabilities and pricing but without those extra measures, and it's only available to approved organizations through Anthropic's Project Glasswing. For the rest of us, Fable 5 is the most intelligent Claude you can call from an API key today."
+        ],
+        bullets: [
+          "Thinking is always on: omit the thinking parameter entirely—explicit 'disabled' returns an error.",
+          "The raw chain of thought is never returned; you get readable summaries instead.",
+          "A new 'refusal' stop reason means your code must check stop_reason before reading content.",
+          "Single API turns can run for many minutes on hard tasks—plan for streaming and async UX."
+        ]
+      },
+      {
+        heading: "What this means for builders",
+        paragraphs: [
+          "The biggest practical shift isn't a parameter—it's the working style. Fable 5 rewards well-specified, up-front task descriptions and long autonomous runs over rapid-fire micro-prompts. Teams reporting the best results gave it their hardest unsolved problems first and let it scope, plan, and execute.",
+          "Old habits actively hurt: prompts written for prior models are often too prescriptive and reduce output quality. The guidance now is to state the goal and constraints, not enumerate the steps. Give it a memory file, let it delegate to sub-agents, and audit its progress claims against real tool output.",
+          "I've been running this very portfolio's maintenance through Claude Code on Fable 5, and the difference on multi-file refactors is genuinely noticeable. The era of the AI pair programmer is quietly becoming the era of the AI engineering partner."
+        ]
+      }
+    ],
+    references: [
+      { label: "Introducing Claude Fable 5 & Mythos 5", url: "https://www.anthropic.com/news/claude-fable-5-mythos-5" },
+      { label: "Claude model overview", url: "https://platform.claude.com/docs/en/about-claude/models/overview" }
+    ]
+  },
+  {
+    slug: "managed-agents-cloud-infrastructure",
+    title: "Managed Agents: When AI Agents Became Cloud Infrastructure",
+    subtitle: "Anthropic's Managed Agents beta turns 'running an agent' into an API call—containers, sessions, and all.",
+    date: "Apr 18, 2026",
+    readingTime: "6 min read",
+    description:
+      "Exploring Anthropic's Managed Agents beta: server-managed agent loops, per-session sandboxed containers, and what it means when agents become a hosted primitive.",
+    sections: [
+      {
+        heading: "From DIY loops to hosted sessions",
+        paragraphs: [
+          "Until now, building an AI agent meant writing the loop yourself: call the model, parse tool calls, execute them, feed results back, repeat. Anthropic's new Managed Agents beta flips that—you define a versioned agent config (model, system prompt, tools), and Anthropic runs the loop and provisions a sandboxed container per session where the agent's bash commands, file edits, and code actually execute.",
+          "Your application just streams events: the agent's messages, tool calls, status changes. You send user messages and tool results back. It feels less like calling an LLM and more like talking to a remote teammate with their own workstation."
+        ]
+      },
+      {
+        heading: "The primitives that matter",
+        paragraphs: [
+          "The design is refreshingly infrastructure-shaped. Agents are persistent, versioned objects—create once, reference by ID, pin sessions to a known-good version. Environments are reusable container templates with network policies. Vaults hold credentials that never enter the sandbox; tokens get injected at egress, so even a prompt-injected agent can't exfiltrate your keys.",
+          "My favorite feature is Outcomes: you define what 'done' looks like with a gradeable rubric, and the platform runs an iterate-grade-revise loop until the artifact passes. It's CI for agent work."
+        ],
+        bullets: [
+          "Mount GitHub repos into sessions—the agent edits, commits, and pushes through an auth proxy.",
+          "Memory stores persist learnings across sessions as plain files the agent reads and writes.",
+          "Scheduled deployments run agents on cron—nightly triage, weekly reports, hourly monitors.",
+          "Webhooks and SSE streams keep your app in the loop without polling."
+        ]
+      },
+      {
+        heading: "Why this matters",
+        paragraphs: [
+          "Every platform shift has a moment when the hard thing becomes a managed service—databases got RDS, deployments got Vercel, and now agent orchestration is getting the same treatment. The interesting question is no longer 'can I build an agent?' but 'what work is worth delegating to one?'",
+          "For solo developers like me, this lowers the floor dramatically: a weekend project can now ship with a production-grade agent backend that would have taken a platform team to build a year ago."
+        ]
+      }
+    ],
+    references: [
+      { label: "Managed Agents overview", url: "https://platform.claude.com/docs/en/managed-agents/overview" },
+      { label: "Claude Developer Platform", url: "https://platform.claude.com/docs" }
+    ]
+  },
+  {
+    slug: "adaptive-thinking-effort-era",
+    title: "The Effort Era: How Adaptive Thinking Killed the Token Budget",
+    subtitle: "Why the latest Claude Opus models dropped temperature, top_p, and thinking budgets—and what replaced them.",
+    date: "Feb 20, 2026",
+    readingTime: "5 min read",
+    description:
+      "A developer's look at the quiet API revolution in modern LLMs: adaptive thinking, the effort parameter, and the end of hand-tuned sampling knobs.",
+    sections: [
+      {
+        heading: "The knobs are disappearing",
+        paragraphs: [
+          "If you've migrated code to the newest Claude Opus models recently, you noticed something strange: temperature, top_p, top_k—gone. Send them and you get a 400 error. The fixed 'thinking budget' in tokens? Also gone. In their place sits a single, almost suspiciously simple control: effort, from low to max.",
+          "This isn't laziness; it's a philosophy shift. The model now decides when and how much to reason—adaptive thinking—and you express intent ('this matters, think hard' vs 'this is routine, be quick') rather than micromanaging the sampler."
+        ]
+      },
+      {
+        heading: "What I learned re-tuning my projects",
+        paragraphs: [
+          "Re-baselining my own side projects taught me that effort matters more than any knob before it. Low effort produces fewer, more consolidated tool calls and terse output—great for classification and routine pipelines. High and above unlock genuinely deeper multi-step reasoning, and on agentic coding the sweet spot keeps climbing.",
+          "The other surprise: aggressive prompt language now backfires. Modern models follow instructions so literally that 'CRITICAL: you MUST always use this tool' causes overtriggering. The fix is almost always to dial language back, not add more guardrails."
+        ],
+        bullets: [
+          "Treat effort as a per-route setting: sweep low/medium/high on your own evals instead of defaulting to max.",
+          "Higher effort up front often reduces total cost on agentic work—better planning means fewer wasted turns.",
+          "Delete your old 'be deterministic' temperature hacks; tighter prompts at low effort do the same job."
+        ]
+      },
+      {
+        heading: "The bigger pattern",
+        paragraphs: [
+          "Step back and the trend is clear: LLM APIs are moving from mechanism to intent. We used to configure how the model samples tokens; now we declare how much the task matters and let the model allocate its own cognition. It mirrors what happened with compilers and query planners—the optimizer eventually beat hand-tuning.",
+          "My advice: stop hoarding prompt tricks tuned for 2024-era models. Re-test everything against current behavior, keep what survives, and embrace the simpler surface. The platform is telling us where it's going."
+        ]
+      }
+    ],
+    references: [
+      { label: "Adaptive thinking docs", url: "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking" },
+      { label: "Effort parameter docs", url: "https://platform.claude.com/docs/en/build-with-claude/effort" }
+    ]
+  },
+  {
     slug: "2026-year-code-came-alive",
     title: "2026: The Year Code Came Alive",
     subtitle: "From static text to agentic partners—how this year changes everything.",
