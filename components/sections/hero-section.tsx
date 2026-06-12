@@ -30,12 +30,12 @@ export function HeroSection() {
               className="mt-2 text-xl sm:text-2xl lg:text-3xl font-medium text-gray-700 dark:text-gray-200 leading-none tracking-wide uppercase"
               style={{ fontFamily: "'Teko', sans-serif" }}
             >
-              INTERN SOFTWARE ENGINEER
+              SOFTWARE ENGINEER
             </p>
           </div>
           
           <p className="text-base sm:text-lg text-muted-foreground max-w-md leading-relaxed">
-            Intern Software Engineer at Infinit Tech systems, with a passion for building complex applications with cutting-edge technologies.
+            Software Engineer at Infinit Tech systems, with a passion for building complex applications with cutting-edge technologies.
           </p>
 
           <div className="mt-6">
