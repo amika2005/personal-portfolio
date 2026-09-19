@@ -190,10 +190,10 @@ export function HeroSection() {
           <div data-hero-parallax className="relative h-full">
             <div data-hero-figure-in className="relative h-full">
               <img
-                src="/my-image.webp"
+                src="/hero-developer.webp"
                 alt="Illustration of Amika"
-                width={816}
-                height={1224}
+                width={1024}
+                height={1536}
                 className="h-full w-auto max-w-none select-none object-contain"
                 draggable={false}
               />

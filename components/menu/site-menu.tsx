@@ -19,7 +19,7 @@ const RISE_CLIP = { clipPath: "inset(-0.5em -100vw 0 -100vw)" }
 type Preview = { kind: "image"; src: string; bg: string } | { kind: "type"; text: string; bg: string; fg: string }
 
 const LINKS: { name: string; href: string; preview: Preview }[] = [
-  { name: "Home", href: "/", preview: { kind: "image", src: "/my-image.webp", bg: RED } },
+  { name: "Home", href: "/", preview: { kind: "image", src: "/hero-developer.webp", bg: RED } },
   { name: "Resume", href: "/resume", preview: { kind: "type", text: "CV", bg: RED, fg: "#141414" } },
   { name: "Stories", href: "/stories", preview: { kind: "image", src: "/images/stories/adventures.webp", bg: INK } },
   { name: "Blog", href: "/blog", preview: { kind: "type", text: "Journal", bg: "#F2EFE9", fg: "#141414" } },
