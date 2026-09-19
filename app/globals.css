@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -143,24 +140,35 @@
     overflow-x: hidden;
   }
 
+  /* Display type: Anton for big headings. It ships a single weight, so font-synthesis
+     stops `font-bold` classes from smearing it with a fake bold. */
+  :where(h1, h2):not(.font-mono),
+  .font-display {
+    font-family: var(--font-display), Impact, sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 0.92;
+  }
+
+  /* Hide the scrollbar while the intro is in the server HTML, before JS can lock scrolling;
+     otherwise the scrollbar shows as a white strip beside the red panels until hydration */
+  html:has([data-intro-root]) {
+    overflow: hidden;
+  }
+
   /* Smooth scroll behavior */
 
 
-  /* Custom scrollbar */
+  /* No visible scrollbar: Lenis drives scrolling, and the track showed as a white strip
+     beside full-bleed sections (wheel, touch and keyboard scrolling still work) */
+  html {
+    scrollbar-width: none;
+  }
+
   ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-muted;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary;
+    display: none;
   }
 }
 

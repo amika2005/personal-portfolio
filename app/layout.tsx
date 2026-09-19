@@ -1,11 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Teko } from "next/font/google"
+import { Anton, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import "./globals.css"
 import SmoothScroll from "@/components/SmoothScroll"
+import { TextReveal } from "@/components/text-reveal"
+import { PageTransition } from "@/components/page-transition"
 import { SeasonalWrapper } from "@/components/seasonal/seasonal-wrapper"
 
 const inter = Inter({
@@ -13,10 +15,10 @@ const inter = Inter({
   variable: "--font-inter",
 })
 
-const teko = Teko({
+const anton = Anton({
   subsets: ["latin"],
-  variable: "--font-teko",
-  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-display",
+  weight: "400",
 })
 
 export const metadata: Metadata = {
@@ -39,12 +41,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans ${inter.variable} ${teko.variable} antialiased`}>
+      <body className={`font-sans ${inter.variable} ${anton.variable} antialiased`}>
         <SmoothScroll>
           <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
             <SeasonalWrapper />
             {children}
+            {/* before TextReveal: its layout effect must hold the reveals first */}
+            <PageTransition />
+            <TextReveal />
           </ThemeProvider>
         </Suspense>
         <Analytics />

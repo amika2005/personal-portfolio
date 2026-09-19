@@ -1,6 +1,6 @@
 "use client"
 
-import { Github, Linkedin, Instagram } from "lucide-react"
+import { Github, Instagram } from "lucide-react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay } from "swiper/modules"
 import "swiper/css"
@@ -9,11 +9,6 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
 
 const socialLinks = [
-  {
-    name: "LinkedIn",
-    href: "https://linkedin.com/in/omonigho-jimmy",
-    icon: Linkedin,
-  },
   {
     name: "GitHub",
     href: "https://github.com/amika2005",

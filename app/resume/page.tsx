@@ -1,155 +1,167 @@
-'use client';
+import type { CSSProperties } from "react"
+import type { Metadata } from "next"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { SocialSidebar } from "@/components/social-slider"
+import { CustomCursor } from "@/components/custom-cursor"
+import { TechMarquee } from "@/components/resume/tech-marquee"
+import { Timeline } from "@/components/resume/timeline"
+import { CvActions } from "@/components/resume/cv-viewer"
+import { ACTIVITIES, LANGUAGES, MARQUEE, PROJECT, SOFT_SKILLS, STACK } from "@/components/resume/data"
 
-import { useEffect, useRef, useState } from 'react';
-import { Header } from "@/components/header";
-import { SocialSidebar } from "@/components/social-slider";
-import { Footer } from "@/components/footer";
-import { TechCard } from "@/components/tech-card";
-import { CustomCursor } from "@/components/custom-cursor";
-import { Button } from "@/components/ui/button";
-import { faHtml5, faCss3Alt, faSass, faJs, faVuejs, faReact, faNodeJs, faNpm, faGitAlt, faGithub, faDocker, faAws, faGit, faFlutter, faJava } from '@fortawesome/free-brands-svg-icons';
-import { faDatabase, faCode, faWind, faCircleNotch, faCloud, faServer, faLayerGroup, faShieldAlt, faCodeBranch, faCube, faCubes, faRocket } from '@fortawesome/free-solid-svg-icons';
+export const metadata: Metadata = {
+  title: "Resume — Amika Fernando",
+  description: "Experience, education and the stack behind the work of Amika Fernando, Software Engineer.",
+}
+
+// dark text on light brand colours, white on dark ones
+const textOn = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16)
+  const lum = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255
+  return lum > 0.6 ? "#0A0A0A" : "#FFFFFF"
+}
+
+const label = "font-mono text-xs uppercase tracking-widest opacity-60"
+const hairline = { borderColor: "color-mix(in srgb, currentColor 18%, transparent)" }
 
 export default function ResumePage() {
-  const [frontendVisible, setFrontendVisible] = useState(false);
-  const [backendVisible, setBackendVisible] = useState(false);
-  const [othersVisible, setOthersVisible] = useState(false);
-  const [showCV, setShowCV] = useState(false);
-
-  const frontendRef = useRef<HTMLDivElement>(null);
-  const backendRef = useRef<HTMLDivElement>(null);
-  const othersRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observerOptions = { threshold: 0.3 };
-
-    const frontendObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setFrontendVisible(true);
-    }, observerOptions);
-
-    const backendObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setBackendVisible(true);
-    }, observerOptions);
-
-    const othersObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setOthersVisible(true);
-    }, observerOptions);
-
-    if (frontendRef.current) frontendObserver.observe(frontendRef.current);
-    if (backendRef.current) backendObserver.observe(backendRef.current);
-    if (othersRef.current) othersObserver.observe(othersRef.current);
-
-    return () => {
-      frontendObserver.disconnect();
-      backendObserver.disconnect();
-      othersObserver.disconnect();
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
       <CustomCursor />
       <Header />
-      <SocialSidebar />
+      <div className="hidden md:block">
+        <SocialSidebar />
+      </div>
 
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        <div className="space-y-12">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Tech I Use</h1>
-              <div className="w-20 h-1.5 bg-red-500 rounded-full"></div>
+      <main>
+        {/* hero */}
+        <section className="mx-auto flex min-h-[80svh] max-w-7xl flex-col justify-end px-6 pb-16 pt-24 sm:px-10 lg:px-14">
+          <p className={label}>Amika Fernando — Resume</p>
+          <h1 className="mt-4 text-[clamp(5.5rem,21vw,19rem)] leading-[0.9]">Resume</h1>
+          <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-xl space-y-4">
+              <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#EF3B2D] opacity-60" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#EF3B2D]" />
+                </span>
+                Currently: Software Engineer @ Infinit Tech Systems
+              </p>
+              <p className="text-lg leading-relaxed opacity-80">
+                Motivated, always learning, and happiest when shipping. I build complex applications end to end, from
+                the interface down to the database.
+              </p>
             </div>
-            <Button 
-              onClick={() => setShowCV(true)}
-              size="lg" 
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 hover:scale-105"
-            >
-              My CV
-            </Button>
+            <CvActions />
           </div>
+        </section>
 
-          {/* Frontend Technologies */}
-          <div ref={frontendRef} className={`bg-gray-50 dark:bg-gray-900/50 rounded-lg p-8 ${frontendVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-            <p className="text-base text-gray-600 dark:text-gray-400 italic mb-8">
-              These include, but are not limited to, the technologies I use for building client-side applications
-            </p>
+        <TechMarquee items={MARQUEE} />
 
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 gap-6">
-              <TechCard icon={faHtml5} alt="HTML5" hoverColor="#E34F26" />
-              <TechCard icon={faCss3Alt} alt="CSS3" hoverColor="#1572B6" />
-              <TechCard icon={faJava} alt="Java" hoverColor="#ED8B00" />
-              <TechCard icon={faWind} alt="Tailwind CSS" hoverColor="#38B2AC" />
-              <TechCard icon={faJs} alt="JavaScript" hoverColor="#F7DF1E" />
-              <TechCard icon={faVuejs} alt="Vue.js" hoverColor="#4FC08D" />
-              <TechCard icon={faReact} alt="React" hoverColor="#61DAFB" />
-              <TechCard icon={faFlutter} alt="Flutter" hoverColor="#02569B" />
-            </div>
-          </div>
+        {/* experience & education */}
+        <section className="mx-auto max-w-7xl px-6 py-28 sm:px-10 lg:px-14">
+          <h2 className="mb-16 text-[clamp(3.5rem,9vw,9rem)] leading-[0.95]">Experience &amp; education</h2>
+          <Timeline />
+        </section>
 
-          {/* Backend Technologies */}
-          <div ref={backendRef} className={`bg-gray-50 dark:bg-gray-900/50 rounded-lg p-8 ${backendVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-            <p className="text-base text-gray-600 dark:text-gray-400 italic mb-8">
-              These include, but are not limited to, the technologies I use for building backend applications
-            </p>
-
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-8 gap-6">
-              <TechCard icon={faNodeJs} alt="Node.js" hoverColor="#339933" />
-              <TechCard icon={faCube} alt="Deno" hoverColor="#000000" />
-              <TechCard icon={faServer} alt="Express.js" hoverColor="#000000" />
-              <TechCard icon={faShieldAlt} alt="NestJS" hoverColor="#E0234E" />
-              <TechCard icon={faDatabase} alt="PostgreSQL" hoverColor="#336791" />
-              <TechCard icon={faCubes} alt="MongoDB" hoverColor="#47A248" />
-              <TechCard icon={faLayerGroup} alt="Prisma" hoverColor="#2D3748" />
-              <TechCard icon={faCodeBranch} alt="TypeScript" hoverColor="#3178C6" />
-            </div>
-          </div>
-
-          {/* Others */}
-          <div ref={othersRef} className={`bg-gray-50 dark:bg-gray-900/50 rounded-lg p-8 ${othersVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-            <p className="text-base text-gray-600 dark:text-gray-400 italic mb-8">Others...and more!</p>
-
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-9 gap-6">
-              <TechCard icon={faNpm} alt="npm" hoverColor="#CB3837" />
-              <TechCard icon={faGit} alt="Git" hoverColor="#F05032" />
-              <TechCard icon={faGithub} alt="GitHub" hoverColor="#181717" />
-              <TechCard icon={faCode} alt="Redis" hoverColor="#DC382D" />
-              <TechCard icon={faDocker} alt="Docker" hoverColor="#2496ED" />
-              <TechCard icon={faAws} alt="AWS" hoverColor="#FF9900" />
-              <TechCard icon={faCircleNotch} alt="CircleCI" hoverColor="#343434" />
-              <TechCard icon={faCloud} alt="Netlify" hoverColor="#00C7B7" />
-              <TechCard icon={faRocket} alt="Heroku" hoverColor="#430098" />
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* CV Modal */}
-      {showCV && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full h-[90vh] flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-2xl font-bold">My CV</h2>
-              <Button
-                onClick={() => setShowCV(false)}
-                variant="ghost"
-                size="sm"
-                className="text-gray-500 hover:text-gray-700"
+        {/* stack */}
+        <section className="bg-[#0A0A0A] px-6 py-28 text-white sm:px-10 lg:px-14">
+          <div className="mx-auto max-w-7xl">
+            <h2 className="mb-16 text-[clamp(3.5rem,9vw,9rem)] leading-[0.95]">The stack</h2>
+            {STACK.map((group) => (
+              <div
+                key={group.group}
+                className="grid gap-6 border-t py-10 md:grid-cols-[minmax(14rem,22rem)_1fr] md:gap-12"
+                style={hairline}
               >
-                ✕
-              </Button>
-            </div>
-            <div className="flex-1 p-4">
-              <iframe
-                src="/cv.pdf"
-                className="w-full h-full border-0 rounded"
-                title="My CV"
-              />
+                <div>
+                  <h3 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.95]">{group.group}</h3>
+                  <p className="mt-2 max-w-xs opacity-60">{group.blurb}</p>
+                </div>
+                <ul className="flex flex-wrap content-start gap-3">
+                  {group.tools.map(({ name, icon: Icon, color }) => (
+                    <li key={name}>
+                      <span
+                        className="flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors duration-300 hover:border-transparent hover:bg-[var(--brand)] hover:text-[var(--on-brand)] sm:text-base"
+                        style={{ ...hairline, "--brand": color, "--on-brand": textOn(color) } as CSSProperties}
+                      >
+                        <Icon aria-hidden className="h-4 w-4 sm:h-5 sm:w-5" />
+                        {name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* featured project */}
+        <section className="mx-auto max-w-7xl px-6 py-28 sm:px-10 lg:px-14">
+          <p className={label}>Featured project</p>
+          <div className="mt-6 grid gap-10 border-t pt-10 md:grid-cols-2 md:gap-16" style={hairline}>
+            <h2 className="text-[clamp(4rem,10vw,10rem)] leading-[0.9]">{PROJECT.name}</h2>
+            <div className="flex flex-col justify-end gap-6">
+              <p data-reveal className="text-xl leading-snug sm:text-2xl">
+                {PROJECT.pitch}
+              </p>
+              <ul className="flex flex-wrap gap-2 font-mono text-xs uppercase tracking-widest">
+                {PROJECT.stack.map((tech) => (
+                  <li key={tech} className="rounded-full border px-3 py-1.5" style={hairline}>
+                    {tech}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        </div>
-      )}
+        </section>
+
+        {/* beyond the code */}
+        <section className="mx-auto max-w-7xl px-6 pb-32 sm:px-10 lg:px-14">
+          <h2 className="mb-14 text-[clamp(3.5rem,9vw,9rem)] leading-[0.95]">Beyond the code</h2>
+          <div className="grid gap-12 md:grid-cols-3">
+            <div>
+              <p className={label}>Languages</p>
+              <ul className="mt-5 space-y-5">
+                {LANGUAGES.map((lang) => (
+                  <li key={lang.name}>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-lg">{lang.name}</span>
+                      <span className="font-mono text-xs uppercase tracking-widest opacity-60">{lang.level}</span>
+                    </div>
+                    <div className="mt-2 h-1 rounded-full" style={{ backgroundColor: "color-mix(in srgb, currentColor 15%, transparent)" }}>
+                      <div className="h-full rounded-full bg-[#EF3B2D]" style={{ width: `${lang.value * 100}%` }} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className={label}>Off the keyboard</p>
+              <ul className="mt-5 space-y-6">
+                {ACTIVITIES.map((activity) => (
+                  <li key={activity.name}>
+                    <p className="font-display text-4xl leading-none">{activity.name}</p>
+                    <p className="mt-1 opacity-70">{activity.detail}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className={label}>How I work</p>
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {SOFT_SKILLS.map((skill) => (
+                  <li key={skill} className="rounded-full border px-4 py-2" style={hairline}>
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </div>
-  );
+  )
 }

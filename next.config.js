@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 
-const nextConfig = {
+const nextConfig = (phase) => ({
   output: 'export',
   trailingSlash: true,
-  distDir: 'dist',
+  // `next dev` writes to the gitignored .next: dist/ is tracked, and editor/sync watchers on it
+  // kept locking freshly written files mid-compile (errno -4094). Builds still export to dist/.
+  distDir: phase === PHASE_DEVELOPMENT_SERVER ? '.next' : 'dist',
   reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
@@ -28,6 +31,6 @@ const nextConfig = {
     };
     return config;
   },
-};
+});
 
 module.exports = nextConfig;

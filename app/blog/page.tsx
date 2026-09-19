@@ -1,73 +1,52 @@
-import Link from "next/link"
+import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CustomCursor } from "@/components/custom-cursor"
 import { SocialSidebar } from "@/components/social-slider"
+import { JournalIndex, type JournalEntry } from "@/components/blog/journal-index"
 import { blogPosts } from "./posts"
+import { topicsFor } from "./topics"
 
-
+export const metadata: Metadata = {
+  title: "Journal — Amika Fernando",
+  description: "Essays on AI, engineering craft and the way we build software.",
+}
 
 export default function BlogPage() {
+  // posts are stored newest first; number them like issues, oldest = No.01
+  const entries: JournalEntry[] = blogPosts.map((post, i) => ({
+    slug: post.slug,
+    no: blogPosts.length - i,
+    title: post.title,
+    subtitle: post.subtitle,
+    date: post.date,
+    readingTime: post.readingTime,
+    topics: topicsFor(post.slug),
+  }))
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-      <Header />
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       <CustomCursor />
-      <SocialSidebar />
+      <Header />
+      <div className="hidden md:block">
+        <SocialSidebar />
+      </div>
 
-      <main className="relative mx-auto flex max-w-5xl gap-16 px-6 sm:px-10 lg:px-16 py-20">
-        <div className="flex-1">
-          <header className="flex flex-col gap-6 mb-16">
-            <div className="flex flex-col gap-2 text-xs uppercase tracking-[0.35em] text-gray-500 dark:text-gray-400">
-              <span>Welcome to my internet space!</span>
-              <span>Writing about building, shipping, and thinking clearly.</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">
-              Blog
-              <span className="animate-blink">_</span>
-            </h1>
-            <p className="text-sm sm:text-base font-semibold uppercase tracking-[0.35em] text-gray-500 dark:text-gray-300 max-w-4xl leading-relaxed">
-              How to Become a Good Coder in the Modern Era?
-            </p>
-            <p className="text-xs uppercase tracking-[0.35em] text-gray-500 dark:text-gray-400 max-w-5xl leading-relaxed">
-            -Writing code that works is just the start. To be a great coder, write optimized, clean, and efficient code that scales and solves real problems.
-
-Keep learning and use modern AI-powered tools to boost your skills and productivity.
-            </p>
-          </header>
-
-          <section className="flex flex-col divide-y divide-gray-200 dark:divide-gray-800">
-            {blogPosts.map((post) => (
-              <article key={post.slug} className="py-10 first:pt-0">
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="group flex flex-col gap-3 text-left"
-                >
-                  <div className="flex flex-col gap-2">
-                    <time className="font-mono text-xs uppercase tracking-[0.35em] text-gray-500 dark:text-gray-400">
-                      {post.date} · {post.readingTime}
-                    </time>
-                    <h2 className="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                      {post.title}
-                    </h2>
-                  </div>
-                  <p className="text-base text-gray-600 dark:text-gray-300 max-w-3xl leading-relaxed">
-                    {post.subtitle}
-                  </p>
-                </Link>
-              </article>
-            ))}
-          </section>
-        </div>
-
-        <aside className="hidden lg:block w-48 space-y-6 pt-4">
-          <div className="text-xs uppercase tracking-[0.35em] text-gray-500 dark:text-gray-400"></div>
-          <div className="flex flex-col gap-3">
-            
+      <main className="mx-auto max-w-7xl px-6 pb-32 pt-20 sm:px-10 lg:px-14">
+        <header className="mb-20 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest opacity-60">Amika Fernando — Writing</p>
+            <h1 className="mt-4 text-[clamp(5.5rem,21vw,19rem)] leading-[0.9]">Journal</h1>
           </div>
-        </aside>
+          <p className="max-w-xs font-mono text-xs uppercase leading-relaxed tracking-widest opacity-70 md:pb-6 md:text-right">
+            {blogPosts.length} essays on AI, craft &amp; the way we build software
+          </p>
+        </header>
+
+        <JournalIndex entries={entries} />
       </main>
 
-      <Footer className="mt-8" />
+      <Footer />
     </div>
   )
 }

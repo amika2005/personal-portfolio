@@ -1,302 +1,94 @@
-"use client"
-
+import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { SocialSidebar } from "@/components/social-slider"
 import { CustomCursor } from "@/components/custom-cursor"
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Carousel3D } from "@/components/3d-carousel-fixed"
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { AboutPortrait } from "@/components/stories/about-portrait"
+import { ChapterStrip } from "@/components/stories/chapter-strip"
+import { NowPlaying } from "@/components/stories/now-playing"
+
+export const metadata: Metadata = {
+  title: "Stories — Amika Fernando",
+  description: "A life in six chapters: the people, places and moments behind the code.",
+}
+
+const FACTS = [
+  { label: "Based in", value: "Colombo, Sri Lanka" },
+  { label: "Work", value: "Software Engineer, Infinit Tech Systems" },
+  { label: "Off the clock", value: "Open source & the outdoors" },
+]
 
 export default function StoriesPage() {
-  const [isMounted, setIsMounted] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  /* New State for User Preference */
-  const [isUserPaused, setIsUserPaused] = useState(false);
-
-  // Handle initial user interaction to enable audio
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const handleFirstInteraction = () => {
-      // Set this flag to indicate user has interacted with the page
-      document.body.dataset.userInteracted = 'true';
-      
-      // Try to start playback if we're in the carousel view
-      if (carouselRef.current) {
-        const carouselRect = carouselRef.current.getBoundingClientRect();
-        const isInCarousel = carouselRect.top < window.innerHeight && carouselRect.bottom > 0;
-        // Only auto-play if user hasn't explicitly paused
-        if (audioRef.current && isInCarousel && !isPlaying && !isUserPaused) {
-          audioRef.current.play().catch(console.error);
-        }
-      }
-      
-      // Remove the event listeners after first interaction
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('keydown', handleFirstInteraction);
-    };
-    
-    // ... existing listeners ...
-    document.addEventListener('click', handleFirstInteraction, { once: true });
-    document.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    // ...
-    return () => {
-       document.removeEventListener('click', handleFirstInteraction);
-       document.removeEventListener('touchstart', handleFirstInteraction);
-       // ...
-    }
-  }, [isPlaying, isUserPaused]); // Added isUserPaused dep
-
-  // Auto-play audio when carousel is in view
-  useEffect(() => {
-    if (!audioRef.current || typeof window === 'undefined') return;
-
-    const handlePlay = async () => {
-      if (!audioRef.current) return;
-      
-      try {
-        const wasMuted = audioRef.current.muted;
-        audioRef.current.muted = true;
-        await audioRef.current.play();
-        setIsPlaying(true);
-        document.body.dataset.audioPlaying = 'true';
-        if (!wasMuted) {
-          audioRef.current.muted = false;
-        }
-      } catch (error) {
-        console.log('Playback failed:', error);
-        // ...
-      }
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Check isUserPaused
-            if (audioRef.current && !isPlaying && !isUserPaused) {
-              handlePlay();
-            }
-          } else {
-            // Pause when out of view (this is fine, but maybe don't set isUserPaused)
-            if (audioRef.current) {
-              audioRef.current.pause();
-              setIsPlaying(false);
-              document.body.dataset.audioPlaying = 'false';
-            }
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-     // ...
-    const currentRef = carouselRef.current;
-    if (currentRef) observer.observe(currentRef);
-    return () => { if (currentRef) observer.unobserve(currentRef); };
-  }, [isPlaying, isUserPaused]); // Added isUserPaused
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsUserPaused(true); // User explicitly paused
-      } else {
-        audioRef.current.play();
-        setIsUserPaused(false); // User explicitly played
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
+      <CustomCursor />
       <Header />
       <div className="hidden md:block">
         <SocialSidebar />
       </div>
-      
-      <main className="flex-1 py-8 md:py-12 px-4 sm:px-6 lg:px-8 w-full">
-        {/* About Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-7xl mx-auto mb-24 px-4 sm:px-6 lg:px-8"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            {/* Text Content - Now on the left */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="md:col-span-7 space-y-6"
-            >
-              <h2 className="text-8xl font-bold text-gray-900 dark:text-white">
-                about.
-              </h2>
-              <div className="h-1 w-20 bg-sky-500 rounded-full my-4" />
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                Hello! I'm Amika, a passionate developer and designer with a love for creating beautiful, functional digital experiences. With a background in both design and development, I bring a unique perspective to every project I work on.
-              </p>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                I see technology as a powerful lever for change, but its true potential is unlocked only with a worldly perspective. This belief shapes how I spend my time, both on and off the screen. Contributing to the global open-source community and embracing the challenges of outdoor adventures are integral to my growth. This blend of technical exploration and real-world experience fuels my commitment to not just write code, but to engineer solutions that transcend boundaries and address universal challenges.
-              </p>
-            </motion.div>
 
-            {/* Image Section - Now on the right */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20, rotate: 2 }}
-              whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="md:col-span-5 -mt-24"
-            >
-              <img
-                src="/About-me.png"
-                alt="About Me"
-                className="w-full h-auto "
-              />
-            </motion.div>
-          </div>
-        </motion.div>
-        {/* Music Player */}
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className="flex items-center space-x-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full p-2 shadow-lg">
-            <button
-              onClick={togglePlay}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label={isPlaying ? 'Pause' : 'Play'}
-            >
-              {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-            </button>
-            <button
-              onClick={toggleMute}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label={isMuted ? 'Unmute' : 'Mute'}
-            >
-              {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-            </button>
-            {/* Hidden Audio Element */}
-            <audio
-              ref={audioRef}
-              loop
-              src="/Night-Changes.mp3"
-              className="hidden"
-              muted={isMuted}
-              preload="auto"
-            />
-            {/* Visual indicator when user interaction is needed */}
-            <div className="play-music-button hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
-              <Play size={12} fill="white" />
+      <main>
+        {/* hero */}
+        <section className="flex min-h-[85svh] flex-col items-center justify-center px-6 pt-10 text-center">
+          <p className="mb-6 font-mono text-xs uppercase tracking-widest opacity-60">Amika Fernando — Stories</p>
+          <h1 className="text-[clamp(5.5rem,22vw,20rem)] leading-[0.9]">Stories</h1>
+          <p className="mt-6 max-w-md text-lg opacity-70">
+            A life in six chapters: the people, places and moments behind the code.
+          </p>
+          <span className="mt-12 animate-bounce font-mono text-xs uppercase tracking-widest opacity-60">Scroll ↓</span>
+        </section>
+
+        {/* about */}
+        <section className="mx-auto grid max-w-7xl gap-14 px-6 py-24 sm:px-10 md:grid-cols-12 md:items-start lg:px-14">
+          <div className="md:col-span-6">
+            <p className="mb-6 font-mono text-xs uppercase tracking-widest opacity-60">About</p>
+            <h2 className="text-[clamp(2.5rem,5.2vw,5.5rem)] leading-[0.95]">
+              Not just writing code. Engineering solutions that cross borders.
+            </h2>
+            <div className="mt-10 space-y-6 text-lg leading-relaxed opacity-80">
+              <p data-reveal>
+                Hello! I&apos;m Amika, a passionate developer and designer with a love for creating beautiful,
+                functional digital experiences. With a background in both design and development, I bring a unique
+                perspective to every project I work on.
+              </p>
+              <p data-reveal>
+                I see technology as a powerful lever for change, but its true potential is unlocked only with a
+                worldly perspective. Contributing to the global open-source community and embracing the challenges of
+                outdoor adventures are integral to my growth, and they shape how I spend my time, on and off the
+                screen.
+              </p>
             </div>
+            <dl
+              className="mt-12 grid gap-6 border-t pt-6 sm:grid-cols-3"
+              style={{ borderColor: "color-mix(in srgb, currentColor 20%, transparent)" }}
+            >
+              {FACTS.map((fact) => (
+                <div key={fact.label}>
+                  <dt className="font-mono text-[11px] uppercase tracking-widest opacity-60">{fact.label}</dt>
+                  <dd className="mt-1 text-base">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        </div>
-        <style jsx global>{`
-          @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-          }
-          .animate-blob {
-            animation: blob 7s infinite;
-          }
-          .animation-delay-2000 {
-            animation-delay: 2s;
-          }
-          .audio-player {
-            -webkit-appearance: none;
-            height: 2px !important;
-            background: #e5e7eb;
-            border-radius: 1px;
-            outline: none;
-          }
-          .audio-player::-webkit-media-controls-panel {
-            background: transparent;
-            padding: 0;
-          }
-          .audio-player::-webkit-media-controls-play-button,
-          .audio-player::-webkit-media-controls-mute-button {
-            display: none;
-          }
-          .audio-player::-webkit-media-controls-timeline,
-          .audio-player::-webkit-media-controls-current-time-display,
-          .audio-player::-webkit-media-controls-time-remaining-display {
-            color: #6b7280;
-            font-size: 0.7rem;
-          }
-          .dark .audio-player::-webkit-media-controls-timeline,
-          .dark .audio-player::-webkit-media-controls-current-time-display,
-          .dark .audio-player::-webkit-media-controls-time-remaining-display {
-            color: #9ca3af;
-          }
-          .audio-player::-webkit-media-controls-timeline {
-            background: #e5e7eb;
-            border-radius: 2px;
-            margin: 0 8px;
-          }
-          .dark .audio-player::-webkit-media-controls-timeline {
-            background: #4b5563;
-          }
-        `}</style>
+          {/* top-aligned (not centred against the long copy) so the portrait sits up by the heading */}
+          <div className="md:col-span-6 md:-mt-4">
+            <AboutPortrait />
+          </div>
+        </section>
 
-        <div className="max-w-4xl mx-auto mb-12 text-center">
-          <div className="mb-4 inline-block">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-              <span className="text-sky-500">My</span> Stories
-            </h1>
-            <div className="h-1 w-full bg-sky-500 mt-2 rounded-full"></div>
-          </div>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            A collection of my journey and experiences in 3D
+        <ChapterStrip />
+
+        {/* outro */}
+        <section className="flex min-h-[60svh] flex-col items-center justify-center gap-6 px-6 py-24 text-center">
+          <p className="font-mono text-sm sm:text-base">
+            &gt; the next chapter is being written<span className="animate-pulse">_</span>
           </p>
-          <p className="mb-4">
-            Scroll Mouse Wheel to Zoom In/Out("Apply Dark Mode")
-          </p>
-        </div>
-        
-        <div 
-          ref={carouselRef}
-          className="w-full h-[80vh] min-h-[600px] flex items-center justify-center mt-12 md:mt-32" 
-        >
-          <div className="w-full max-w-4xl h-full">
-            <Carousel3D />
-          </div>
-        </div>
-        
-        <div className="max-w-4xl mx-auto mt-12 text-center text-gray-600 dark:text-gray-300">
-          <p className="mb-4">
-            Hover and drag to rotate the carousel. The carousel will automatically rotate when idle.
-          </p>
-        </div>
+          <h2 className="text-[clamp(3.5rem,10vw,10rem)] leading-[0.95]">To be continued</h2>
+        </section>
       </main>
-      
+
+      <NowPlaying />
       <Footer />
-      <CustomCursor />
     </div>
   )
 }
