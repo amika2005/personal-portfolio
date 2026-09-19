@@ -85,7 +85,8 @@ export default function ResumePage() {
                         className="flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors duration-300 hover:border-transparent hover:bg-[var(--brand)] hover:text-[var(--on-brand)] sm:text-base"
                         style={{ ...hairline, "--brand": color, "--on-brand": textOn(color) } as CSSProperties}
                       >
-                        <Icon aria-hidden className="h-4 w-4 sm:h-5 sm:w-5" />
+                        {/* an icon missing from the installed react-icons shouldn't take the page down */}
+                        {Icon && <Icon aria-hidden className="h-4 w-4 sm:h-5 sm:w-5" />}
                         {name}
                       </span>
                     </li>

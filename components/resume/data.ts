@@ -1,9 +1,11 @@
 import type { IconType } from "react-icons"
+// AWS, CSS3 and Heroku come from other sets: simple-icons dropped them, and react-icons 5.7
+// removed SiAmazonwebservices / SiCss3 / SiHeroku, which crashed the /resume build on Vercel
+import { FaAws, FaCss3Alt } from "react-icons/fa"
+import { DiHeroku } from "react-icons/di"
 import {
-  SiAmazonwebservices,
   SiCircleci,
   SiCloudinary,
-  SiCss3,
   SiDeno,
   SiDocker,
   SiExpress,
@@ -13,7 +15,6 @@ import {
   SiGit,
   SiGithub,
   SiGreensock,
-  SiHeroku,
   SiHtml5,
   SiJavascript,
   SiMongodb,
@@ -92,7 +93,7 @@ export const STACK: { group: string; blurb: string; tools: Tool[] }[] = [
     blurb: "Interfaces, motion and everything the user touches.",
     tools: [
       { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
-      { name: "CSS3", icon: SiCss3, color: "#1572B6" },
+      { name: "CSS3", icon: FaCss3Alt, color: "#1572B6" },
       { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
       { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
       { name: "React", icon: SiReact, color: "#61DAFB" },
@@ -130,10 +131,10 @@ export const STACK: { group: string; blurb: string; tools: Tool[] }[] = [
       { name: "GitHub", icon: SiGithub, color: "#FFFFFF" },
       { name: "npm", icon: SiNpm, color: "#CB3837" },
       { name: "Docker", icon: SiDocker, color: "#2496ED" },
-      { name: "AWS", icon: SiAmazonwebservices, color: "#FF9900" },
+      { name: "AWS", icon: FaAws, color: "#FF9900" },
       { name: "CircleCI", icon: SiCircleci, color: "#FFFFFF" },
       { name: "Netlify", icon: SiNetlify, color: "#00C7B7" },
-      { name: "Heroku", icon: SiHeroku, color: "#9E7CC1" },
+      { name: "Heroku", icon: DiHeroku, color: "#9E7CC1" },
       { name: "Cloudinary", icon: SiCloudinary, color: "#3448C5" },
       { name: "Figma", icon: SiFigma, color: "#F24E1E" },
     ],
