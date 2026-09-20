@@ -44,7 +44,7 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable} ${anton.variable} antialiased`}>
         <SmoothScroll>
           <Suspense fallback={null}>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange={false}>
             <SeasonalWrapper />
             {children}
             {/* before TextReveal: its layout effect must hold the reveals first */}
