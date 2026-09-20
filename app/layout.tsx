@@ -24,14 +24,7 @@ const anton = Anton({
 export const metadata: Metadata = {
   title: "Amika Fernando",
   description: "Portfolio of Amika Fernando, Software Engineer specializing in frontend and backend development",
-  icons: {
-    icon:
-      "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230073ff'/></svg>",
-    shortcut:
-      "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230073ff'/></svg>",
-    apple:
-      "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230073ff'/></svg>",
-  },
+  // the tab icon is app/icon.svg — the wordmark's A in the site red
 }
 
 export default function RootLayout({
