@@ -30,10 +30,15 @@ export function CustomCursor() {
     const ring = ringRef.current
     if (!dot || !ring) return
 
-    const dotX = gsap.quickTo(dot, "x", { duration: 0.12, ease: "power3.out" })
-    const dotY = gsap.quickTo(dot, "y", { duration: 0.12, ease: "power3.out" })
-    const ringX = gsap.quickTo(ring, "x", { duration: 0.5, ease: "power3.out" })
-    const ringY = gsap.quickTo(ring, "y", { duration: 0.5, ease: "power3.out" })
+    // centre both on the pointer here rather than with a CSS translate: GSAP applies the percent
+    // shift with the move, so the ring's rotation can't swing its own centre off the dot
+    gsap.set([dot, ring], { xPercent: -50, yPercent: -50 })
+
+    const dotX = gsap.quickTo(dot, "x", { duration: 0.1, ease: "power3.out" })
+    const dotY = gsap.quickTo(dot, "y", { duration: 0.1, ease: "power3.out" })
+    // only a touch slower than the dot, so the ring stays around it instead of trailing behind
+    const ringX = gsap.quickTo(ring, "x", { duration: 0.22, ease: "power3.out" })
+    const ringY = gsap.quickTo(ring, "y", { duration: 0.22, ease: "power3.out" })
     const ringRot = gsap.quickTo(ring, "rotation", { duration: 0.35, ease: "power3.out" })
     const ringSX = gsap.quickTo(ring, "scaleX", { duration: 0.35, ease: "power3.out" })
     const ringSY = gsap.quickTo(ring, "scaleY", { duration: 0.35, ease: "power3.out" })
@@ -61,8 +66,8 @@ export function CustomCursor() {
       const speed = Math.min(Math.hypot(dx, dy), 90)
       if (speed > 2) {
         ringRot((Math.atan2(dy, dx) * 180) / Math.PI)
-        ringSX(1 + speed / 160)
-        ringSY(1 - speed / 320)
+        ringSX(1 + speed / 220)
+        ringSY(1 - speed / 440)
       } else {
         ringSX(1)
         ringSY(1)
@@ -108,45 +113,39 @@ export function CustomCursor() {
     const ring = innerRef.current
     const dot = dotRef.current
     if (!ring || !dot) return
+    // hover just zooms the ring and washes it in: the dot stays in the middle of it throughout
     const size = mode === "text" ? 104 : mode === "link" ? 64 : 34
     gsap.to(ring, {
       width: size,
       height: size,
-      backgroundColor: mode === "idle" ? "rgba(239,59,45,0)" : RED,
-      borderColor: mode === "idle" ? RED : "rgba(239,59,45,0)",
+      backgroundColor: mode === "idle" ? "rgba(239,59,45,0)" : "rgba(239,59,45,0.18)",
       duration: 0.4,
       ease: "power3.out",
     })
-    gsap.to(dot, { scale: mode === "idle" ? 1 : 0, duration: 0.3, ease: "power3.out" })
+    gsap.to(dot, { scale: mode === "text" ? 0 : 1, duration: 0.3, ease: "power3.out" })
   }, [mode, enabled])
 
   if (!enabled) return null
 
   return (
     <>
-      {/* the dot, inverted against whatever is under it */}
-      <div ref={dotRef} className="pointer-events-none fixed left-0 top-0 z-[9999] mix-blend-difference">
-        <div className="-translate-x-1/2 -translate-y-1/2">
-          <div className="h-2.5 w-2.5 rounded-full bg-white" />
+      {/* the dot, which takes the page's own ink colour and flips with the theme */}
+      <div ref={dotRef} className="pointer-events-none fixed left-0 top-0 z-[9999]">
+        <div>
+          <div className="h-2.5 w-2.5 rounded-full bg-[#141414] shadow-[0_0_0_1.5px_rgba(255,255,255,0.6)] transition-colors duration-500 dark:bg-white dark:shadow-[0_0_0_1.5px_rgba(0,0,0,0.5)]" />
         </div>
       </div>
 
-      {/* the trailing ring */}
+      {/* the ring that rides with it */}
       <div ref={ringRef} className="pointer-events-none fixed left-0 top-0 z-[9998]">
-        <div className="flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+        <div className="flex items-center justify-center">
           <div
             ref={innerRef}
-            className="flex items-center justify-center rounded-full border"
+            className="flex items-center justify-center rounded-full border-[1.5px]"
             style={{ width: 34, height: 34, borderColor: RED, backgroundColor: "rgba(239,59,45,0)" }}
           >
-            {mode === "link" && (
-              <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#141414" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 17L17 7" />
-                <path d="M8 7h9v9" />
-              </svg>
-            )}
             {mode === "text" && label && (
-              <span className="px-3 text-center font-display text-sm uppercase leading-none tracking-wide text-[#141414]">
+              <span className="px-3 text-center font-display text-sm uppercase leading-none tracking-wide text-[#141414] dark:text-white">
                 {label}
               </span>
             )}
