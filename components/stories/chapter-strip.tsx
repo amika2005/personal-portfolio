@@ -165,8 +165,8 @@ export function ChapterStrip() {
             One story.
           </p>
           <p className="mt-6 font-mono text-xs uppercase tracking-widest opacity-70">
-            <span className="hidden md:inline">Keep scrolling →</span>
-            <span className="md:hidden">Keep scrolling ↓</span>
+            <span className="hidden md:inline">Keep scrolling →︎</span>
+            <span className="md:hidden">Keep scrolling ↓︎</span>
           </p>
         </div>
 

@@ -91,7 +91,7 @@ export function JournalIndex({ entries }: { entries: JournalEntry[] }) {
             <p className="mt-5 max-w-2xl text-lg leading-relaxed opacity-75">{featured.subtitle}</p>
             <span className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest">
               Read the story
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→︎</span>
             </span>
           </div>
           <Cover entry={featured} className="aspect-[4/5] transition-transform duration-500 group-hover:-rotate-2" />
@@ -147,7 +147,7 @@ export function JournalIndex({ entries }: { entries: JournalEntry[] }) {
               <span className="col-start-2 font-mono text-xs uppercase tracking-widest opacity-60 md:col-start-auto">
                 <span className="md:hidden">{entry.date} · </span>
                 {entry.readingTime}
-                <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+                <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→︎</span>
               </span>
             </Link>
           </li>

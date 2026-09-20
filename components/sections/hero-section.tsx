@@ -223,10 +223,10 @@ export function HeroSection() {
           Software Engineer at Infinit Tech Systems, building complex applications with cutting-edge technologies.
         </p>
         <span data-hero-fade className="font-mono text-[11px] uppercase tracking-widest opacity-70 md:hidden">
-          Scroll ↓
+          Scroll ↓︎
         </span>
         <div data-hero-fade className="flex items-center gap-6">
-          <span className="hidden font-mono text-xs uppercase tracking-widest opacity-70 md:inline">Scroll ↓</span>
+          <span className="hidden font-mono text-xs uppercase tracking-widest opacity-70 md:inline">Scroll ↓︎</span>
           <a
             ref={ctaRef}
             href={`mailto:${EMAIL}`}
@@ -249,7 +249,7 @@ export function HeroSection() {
               aria-hidden
               className="grid h-10 w-10 place-items-center rounded-full bg-[#EF3B2D] text-lg text-[#141414] transition-transform duration-500 ease-out group-hover:scale-125 group-hover:rotate-45 md:h-14 md:w-14 md:text-2xl"
             >
-              ↗
+              ↗︎
             </span>
           </a>
         </div>

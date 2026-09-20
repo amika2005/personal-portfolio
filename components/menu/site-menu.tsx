@@ -166,7 +166,7 @@ export function SiteMenu({ open, onClose, pathname }: { open: boolean; onClose: 
       <div data-menu-ink className="absolute inset-0 flex flex-col overflow-y-auto text-white" style={{ background: INK }}>
         <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:px-6 md:px-10 lg:px-14">
           <span className="font-display text-2xl leading-none md:text-3xl">
-            <span className="text-sky-500">A</span>MIKA
+            <span className="text-[#EF3B2D]">A</span>MIKA
           </span>
           <button
             ref={closeRef}

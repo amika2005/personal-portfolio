@@ -20,6 +20,51 @@ const desktopNav = [
 // trailingSlash routes come back as "/blog/", links are written "/blog"
 const samePath = (a: string, b: string) => a.replace(/\/+$/, "") === b.replace(/\/+$/, "")
 
+/**
+ * The wordmark. On hover each letter of AMIKA rolls up out of its own mask, letter by letter,
+ * while あみか rolls in from below and a red cut slides across underneath — the same roll the
+ * nav and the footer use, so the logo moves like the rest of the site.
+ */
+function LogoMark() {
+  const letters = "AMIKA".split("")
+
+  return (
+    <span className="relative block select-none font-display text-2xl leading-none md:text-3xl">
+      {/* AMIKA: one mask per letter, staggered */}
+      <span aria-hidden className="flex items-center">
+        {letters.map((letter, i) => (
+          <span key={i} className="relative block overflow-hidden py-[0.06em]">
+            <span
+              className={cn(
+                "block transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-[130%]",
+                i === 0 ? "text-[#EF3B2D]" : "text-black dark:text-white",
+              )}
+              style={{ transitionDelay: `${i * 35}ms` }}
+            >
+              {letter}
+            </span>
+          </span>
+        ))}
+      </span>
+
+      {/* あみか rolls in once the last letter has left */}
+      <span aria-hidden className="absolute inset-0 overflow-hidden">
+        <span className="block translate-y-[130%] text-[0.8em] tracking-tight text-[#EF3B2D] transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0 group-hover:delay-[180ms]">
+          あみか
+        </span>
+      </span>
+
+      {/* the site's cut, drawn under the wordmark */}
+      <span
+        aria-hidden
+        className="absolute -bottom-1 left-0 h-[3px] w-full origin-left scale-x-0 bg-[#EF3B2D] transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-x-100 group-hover:delay-[120ms]"
+      />
+
+      <span className="sr-only">Amika Fernando — home</span>
+    </span>
+  )
+}
+
 export function Header() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -90,22 +135,7 @@ export function Header() {
                   {season === "vesak" && <VesakLantern />}
                 </AnimatePresence>
 
-              <div className="relative transition-all duration-500 transform-style-3d group-hover:rotate-x-180">
-                {/* Front Face - AMIKA */}
-                <div className="flex items-center backface-hidden">
-                  <span className="font-display text-2xl leading-none md:text-3xl">
-                    <span className="text-sky-500">A</span>
-                    <span className="text-black dark:text-white">MIKA</span>
-                  </span>
-                </div>
-                
-                {/* Back Face - あみか (Hidden initially, shown on flip) */}
-                <div className="absolute inset-0 flex items-center justify-center backface-hidden rotate-x-180 bg-white backdrop-blur-none dark:bg-gray-950">
-                   <span className="text-xl md:text-2xl font-bold tracking-tight text-sky-500">
-                    あみか
-                  </span>
-                </div>
-              </div>
+              <LogoMark />
             </Link>
           </motion.div>
 
@@ -150,7 +180,8 @@ export function Header() {
               onClick={() => setIsMenuOpen(true)}
               aria-expanded={isMenuOpen}
               aria-controls="site-menu"
-              className="group flex h-12 items-center gap-3 font-mono text-xs uppercase tracking-widest"
+              // desktop already carries the full nav, so the hamburger is a phone-only control
+              className="group flex h-12 items-center gap-3 font-mono text-xs uppercase tracking-widest md:hidden"
             >
               <span className="hidden sm:inline">
                 <RollText text="Menu" />

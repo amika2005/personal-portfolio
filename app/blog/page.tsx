@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CustomCursor } from "@/components/custom-cursor"
-import { SocialSidebar } from "@/components/social-slider"
 import { JournalIndex, type JournalEntry } from "@/components/blog/journal-index"
 import { blogPosts } from "./posts"
 import { topicsFor } from "./topics"
@@ -29,7 +28,6 @@ export default function BlogPage() {
       <CustomCursor />
       <Header />
       <div className="hidden md:block">
-        <SocialSidebar />
       </div>
 
       <main className="mx-auto max-w-7xl px-6 pb-32 pt-20 sm:px-10 lg:px-14">

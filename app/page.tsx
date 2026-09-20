@@ -1,7 +1,6 @@
 "use client"
 
 import { Header } from "@/components/header"
-import { SocialSidebar } from "@/components/social-slider"
 import { Footer } from "@/components/footer"
 import { HeroSection } from "@/components/sections/hero-section"
 import { ProcessSection } from "@/components/sections/process-section"
@@ -26,10 +25,6 @@ export default function HomePage() {
       {/* Signs You're Ready Section */}
 
       
-      <main className="container mx-auto px-6 py-8 max-w-5xl">
-        <SocialSidebar />
-      </main>
-
 
       <Footer />
     </div>

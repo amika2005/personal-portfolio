@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { SocialSidebar } from "@/components/social-slider"
 import { CustomCursor } from "@/components/custom-cursor"
 import { AboutPortrait } from "@/components/stories/about-portrait"
 import { ChapterStrip } from "@/components/stories/chapter-strip"
@@ -24,7 +23,6 @@ export default function StoriesPage() {
       <CustomCursor />
       <Header />
       <div className="hidden md:block">
-        <SocialSidebar />
       </div>
 
       <main>
@@ -35,7 +33,7 @@ export default function StoriesPage() {
           <p className="mt-6 max-w-md text-lg opacity-70">
             A life in six chapters: the people, places and moments behind the code.
           </p>
-          <span className="mt-12 animate-bounce font-mono text-xs uppercase tracking-widest opacity-60">Scroll ↓</span>
+          <span className="mt-12 animate-bounce font-mono text-xs uppercase tracking-widest opacity-60">Scroll ↓︎</span>
         </section>
 
         {/* about */}

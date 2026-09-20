@@ -5,7 +5,6 @@ import { notFound } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CustomCursor } from "@/components/custom-cursor"
-import { SocialSidebar } from "@/components/social-slider"
 import { CopyLink, PostReader } from "@/components/blog/post-reader"
 import { blogPosts } from "../posts"
 import { anchorFor, topicsFor } from "../topics"
@@ -58,14 +57,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       <CustomCursor />
       <Header />
       <div className="hidden md:block">
-        <SocialSidebar />
       </div>
 
       <main className="mx-auto max-w-7xl px-6 pb-24 pt-16 sm:px-10 lg:px-14">
         {/* hero */}
         <div className="border-b pb-14" style={hairline}>
           <Link href="/blog" className="font-mono text-xs uppercase tracking-widest opacity-60 transition-opacity hover:opacity-100">
-            ← Journal
+            ←︎ Journal
           </Link>
           <p className="mt-10 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs uppercase tracking-widest opacity-70">
             <span>No.{String(no).padStart(2, "0")}</span>
@@ -128,7 +126,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                         rel="noopener noreferrer"
                         className="text-lg underline decoration-[#EF3B2D] decoration-2 underline-offset-4 transition-opacity hover:opacity-70"
                       >
-                        {reference.label} ↗
+                        {reference.label} ↗︎
                       </a>
                     </li>
                   ))}
@@ -146,8 +144,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         {/* keep reading */}
         <nav aria-label="More posts" className="mt-24 grid border-t md:grid-cols-2" style={hairline} data-no-reveal>
           {[
-            { post: newer, label: "← Newer" },
-            { post: older, label: "Older →" },
+            { post: newer, label: "←︎ Newer" },
+            { post: older, label: "Older →︎" },
           ].map(({ post: other, label }, i) =>
             other ? (
               <Link

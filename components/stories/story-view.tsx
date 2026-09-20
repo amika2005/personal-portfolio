@@ -102,7 +102,7 @@ export function StoryView({ index, onChange, onClose }: Props) {
               onClick={() => onChange(index - 1)}
               className="rounded-full border-[1.5px] border-current px-4 py-2 transition-opacity hover:opacity-70 disabled:opacity-30"
             >
-              ← Prev
+              ←︎ Prev
             </button>
             <button
               type="button"
@@ -110,7 +110,7 @@ export function StoryView({ index, onChange, onClose }: Props) {
               onClick={() => onChange(index + 1)}
               className="rounded-full border-[1.5px] border-current px-4 py-2 transition-opacity hover:opacity-70 disabled:opacity-30"
             >
-              Next →
+              Next →︎
             </button>
           </div>
         </div>

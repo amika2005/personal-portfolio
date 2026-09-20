@@ -44,7 +44,7 @@ function FooterLink({ href, name, external }: { href: string; name: string; exte
         aria-hidden
         className="-translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
       >
-        ↗
+        ↗︎
       </span>
     </>
   )
@@ -234,7 +234,7 @@ export function Footer({ className }: { className?: string }) {
                         aria-hidden
                         className="inline-block text-[0.6em] transition-transform duration-500 ease-[cubic-bezier(0.7,0,0.2,1)] group-hover:-translate-y-[0.1em] group-hover:translate-x-[0.1em] group-hover:rotate-45"
                       >
-                        ↗
+                        ↗︎
                       </span>
                     </span>
                   </span>
@@ -293,7 +293,11 @@ export function Footer({ className }: { className?: string }) {
                   className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#141414] text-[10px] text-[#EF3B2D] transition-transform hover:scale-110 sm:h-20 sm:w-20"
                 >
                   <span className="flex flex-col items-center gap-1">
-                    <span className="text-lg leading-none">↑</span>
+                    {/* drawn, not typed: iOS renders the ↑︎ glyph as a colour emoji */}
+                    <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 19V5" />
+                      <path d="M5 12l7-7 7 7" />
+                    </svg>
                     Top
                   </span>
                 </button>

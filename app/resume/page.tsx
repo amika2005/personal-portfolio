@@ -2,7 +2,6 @@ import type { CSSProperties } from "react"
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { SocialSidebar } from "@/components/social-slider"
 import { CustomCursor } from "@/components/custom-cursor"
 import { TechMarquee } from "@/components/resume/tech-marquee"
 import { Timeline } from "@/components/resume/timeline"
@@ -30,7 +29,6 @@ export default function ResumePage() {
       <CustomCursor />
       <Header />
       <div className="hidden md:block">
-        <SocialSidebar />
       </div>
 
       <main>

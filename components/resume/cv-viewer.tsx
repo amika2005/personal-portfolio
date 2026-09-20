@@ -21,10 +21,10 @@ export function CvActions() {
         onClick={() => setOpen(true)}
         className={`${pill} bg-current [&>span]:text-white dark:[&>span]:text-gray-950`}
       >
-        <span>View CV ↗</span>
+        <span>View CV ↗︎</span>
       </button>
       <a href={CV} download="Amika-Fernando-CV.pdf" className={`${pill} hover:opacity-70`}>
-        Download PDF ↓
+        Download PDF ↓︎
       </a>
       {open && <CvViewer onClose={() => setOpen(false)} />}
     </div>
@@ -65,7 +65,7 @@ function CvViewer({ onClose }: { onClose: () => void }) {
         <span className="font-display text-3xl leading-none sm:text-4xl">Curriculum Vitae</span>
         <div className="flex gap-3">
           <a href={CV} download="Amika-Fernando-CV.pdf" className={`${pill} hidden hover:bg-white/10 sm:inline-flex`}>
-            Download ↓
+            Download ↓︎
           </a>
           <button ref={closeRef} type="button" onClick={onClose} className={`${pill} hover:bg-white/10`}>
             Close ✕

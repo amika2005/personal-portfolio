@@ -583,13 +583,18 @@
 }
 
 
+/* iOS renders arrows like ↗ as colour emoji unless text presentation is forced */
+html {
+  font-variant-emoji: text;
+}
+
 /* Custom Selection Color */
 ::selection {
-  background-color: #38bdf8; /* Sky Blue */
+  background-color: #EF3B2D; /* the site red */
   color: #ffffff;
 }
 ::-moz-selection {
-  background-color: #38bdf8; /* Sky Blue */
+  background-color: #EF3B2D; /* the site red */
   color: #ffffff;
 }
 
